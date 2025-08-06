@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track Order | AgriConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f1f8e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      position: relative;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 30px 40px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    header p {
+      margin-top: 10px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background-color: rgba(232, 245, 233, 0.2);
+    }
+
+    input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+      background-color: var(--white);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    .status-box {
+      background-color: rgba(232, 245, 233, 0.5);
+      padding: 25px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border-left: 5px solid var(--primary-light);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .status-box h3 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+
+    .status-box p {
+      line-height: 1.8;
+      color: var(--text-dark);
+    }
+
+    .home-button {
+      margin-top: 20px;
+      display: inline-block;
+      background-color: var(--primary);
+      padding: 12px 25px;
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .home-button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      margin-top: 60px;
+    }
+
+    .tracking-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .tracking-image img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    .status-animation {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .status-animation img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      .tracking-image img {
+        width: 120px;
+        height: 120px;
+      }
+
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Track Your Order</h1>
+    <p>Check the current status of your vegetable order</p>
+  </header>
+
+  <div class="container">
+    <div class="tracking-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/3712/3712159.png" alt="Delivery Truck" class="animate__animated animate__fadeIn">
+    </div>
+
+    <form id="trackForm">
+      <label for="customerName">Enter Your Name or Order ID</label>
+      <input type="text" id="customerName" placeholder="e.g., John Doe or #ORD123" required>
+      <button type="button" onclick="trackOrder()">Track Order</button>
+    </form>
+
+    <div class="status-box" id="statusBox" style="display: none;">
+      <div class="status-animation">
+        <img id="statusImage" src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Order Status" class="animate__animated">
+      </div>
+      <h3>Order Status</h3>
+      <p id="statusResult"></p>
+      <a href="index.html" class="home-button">Go to Home</a>
+    </div>
+  </div>
+
+  <a href="index.html" class="home-btn animate__animated animate__fadeInRight">🏠</a>
+
+  <div class="footer">
+    &copy; 2025 AgriConnect | Empowering Farmers, Delivering Freshness
+  </div>
+
+  <script>
+    function trackOrder() {
+      const name = document.getElementById('customerName').value.trim();
+
+      if (!name) {
+        // Add shake animation to input field
+        document.getElementById('customerName').classList.add('animate__animated', 'animate__shakeX');
+        setTimeout(() => {
+          document.getElementById('customerName').classList.remove('animate__animated', 'animate__shakeX');
+        }, 1000);
+        return;
+      }
+
+      // Simulated order tracking logic
+      let statusMessage = "";
+      let statusImage = "";
+      let animationClass = "";
+
+      if (name.toLowerCase().includes("john") || name.toLowerCase().includes("ord123")) {
+        statusMessage = `
+          <strong>Order ID:</strong> ORD123<br>
+          <strong>Product:</strong> Tomato (2kg)<br>
+          <strong>Status:</strong> <span style="color: var(--primary);">Out for Delivery</span><br>
+          <strong>Expected Delivery:</strong> Today by 5 PM<br>
+          <strong>Delivery Agent:</strong> Ramesh (Contact: 9876543210)
+        `;
+        statusImage = "https://cdn-icons-png.flaticon.com/512/190/190411.png";
+        animationClass = "animate__tada";
+      } else {
+        statusMessage = `
+          <strong>Order ID:</strong> ORD456<br>
+          <strong>Product:</strong> Spinach (3 bunches)<br>
+          <strong>Status:</strong> <span style="color: var(--primary-dark);">Packed and ready to ship</span><br>
+          <strong>Expected Delivery:</strong> Tomorrow<br>
+          <strong>Tracking Number:</strong> TRK789456123
+        `;
+        statusImage = "https://cdn-icons-png.flaticon.com/512/3064/3064155.png";
+        animationClass = "animate__pulse";
+      }
+
+      document.getElementById('statusResult').innerHTML = statusMessage;
+      const statusImgElement = document.getElementById('statusImage');
+      statusImgElement.src = statusImage;
+      statusImgElement.classList.add(animationClass);
+      
+      document.getElementById('statusBox').style.display = 'block';
+      
+      // Scroll to status box
+      document.getElementById('statusBox').scrollIntoView({ behavior: 'smooth' });
+      
+      // Remove animation after it completes
+      setTimeout(() => {
+        statusImgElement.classList.remove(animationClass);
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>

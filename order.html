@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Vegetables | AgriConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #e8f5e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('https://images.unsplash.com/photo-1582281298052-2a3a601b5d3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      background-attachment: fixed;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(232, 245, 233, 0.85);
+      z-index: -1;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    header p {
+      margin-top: 10px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+    }
+
+    .veg-banner {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .veg-item {
+      text-align: center;
+      margin: 10px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .veg-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .veg-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary-light);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .veg-item:hover img {
+      border-color: var(--secondary);
+      transform: scale(1.1);
+    }
+
+    .veg-item p {
+      margin-top: 8px;
+      font-weight: 500;
+      color: var(--primary-dark);
+    }
+
+    h2 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 20px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background-color: rgba(232, 245, 233, 0.2);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+      background-color: var(--white);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    .summary {
+      background-color: rgba(232, 245, 233, 0.5);
+      padding: 25px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border-left: 5px solid var(--primary-light);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .summary h3 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+
+    .summary p {
+      line-height: 1.8;
+      color: var(--text-dark);
+    }
+
+    .actions {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .actions a {
+      text-decoration: none;
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .actions a:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .actions a i {
+      margin-right: 8px;
+    }
+
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      margin-top: 60px;
+    }
+
+    #toast {
+      visibility: hidden;
+      min-width: 280px;
+      background-color: var(--primary);
+      color: var(--white);
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 40px;
+      font-size: 16px;
+      font-weight: 500;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(-20px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .veg-item img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Order Fresh Vegetables</h1>
+    <p>Get quality produce straight from farms to your doorstep</p>
+  </header>
+
+  <div class="container">
+    <h2>Fill Your Order Details</h2>
+    
+    <div class="veg-banner">
+      <div class="veg-item" onclick="selectVeg('Tomato')">
+        <img src="tomato.jpeg" alt="Tomato" class="floating">
+        <p>Tomato ₹30/kg</p>
+      </div>
+      <div class="veg-item" onclick="selectVeg('Potato')">
+        <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Potato">
+        <p>Potato ₹20/kg</p>
+      </div>
+      <div class="veg-item" onclick="selectVeg('Spinach')">
+        <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Spinach" class="floating">
+        <p>Spinach ₹15/bunch</p>
+      </div>
+    </div>
+
+    <form id="orderForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+      <label for="address">Delivery Address</label>
+      <textarea id="address" name="address" rows="3" placeholder="Enter delivery address" required></textarea>
+
+      <label for="contact">Contact Number</label>
+      <input type="tel" id="contact" name="contact" placeholder="e.g., 9876543210" required>
+
+      <label for="product">Selected Vegetable</label>
+      <select id="product" name="product" required>
+        <option value="">-- Choose --</option>
+        <option value="Tomato">Tomato - ₹30/kg</option>
+        <option value="Potato">Potato - ₹20/kg</option>
+        <option value="Spinach">Spinach - ₹15/bunch</option>
+        <option value="Carrot">Carrot - ₹40/kg</option>
+        <option value="Onion">Onion - ₹25/kg</option>
+      </select>
+
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+      <button type="button" onclick="submitOrder()">Submit Order</button>
+    </form>
+
+    <div class="summary" id="orderSummary" style="display: none;">
+      <h3>Order Summary</h3>
+      <p id="summaryContent"></p>
+      <div class="actions">
+        <a href="index.html"><i>🏠</i> Go to Home</a>
+        <a href="track.html"><i>📦</i> Track My Order</a>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="home-btn animate__animated animate__fadeInRight">🏠</a>
+
+  <div class="footer">
+    &copy; 2025 AgriConnect | Empowering Farmers, Delivering Freshness
+  </div>
+
+  <div id="toast">✅ Order Submitted Successfully!</div>
+
+  <script>
+    // Auto-select product from URL parameter
+    window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+      const selectedVeg = params.get("veg");
+
+      if (selectedVeg) {
+        selectVeg(selectedVeg);
+      }
+    };
+
+    function selectVeg(vegName) {
+      const productDropdown = document.getElementById("product");
+      for (let i = 0; i < productDropdown.options.length; i++) {
+        if (productDropdown.options[i].value.toLowerCase() === vegName.toLowerCase()) {
+          productDropdown.selectedIndex = i;
+          // Add visual feedback
+          productDropdown.classList.add('animate__animated', 'animate__pulse');
+          setTimeout(() => {
+            productDropdown.classList.remove('animate__animated', 'animate__pulse');
+          }, 1000);
+          break;
+        }
+      }
+      document.getElementById("quantity").focus();
+    }
+
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.add('show', 'animate__animated', 'animate__bounceInUp');
+      setTimeout(() => {
+        toast.classList.remove('show', 'animate__animated', 'animate__bounceInUp');
+      }, 3000);
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const product = document.getElementById('product').value;
+      const quantity = document.getElementById('quantity').value;
+
+      if (!name || !address || !contact || !product || !quantity) {
+        // Add shake animation to empty fields
+        if (!name) document.getElementById('name').classList.add('animate__animated', 'animate__shakeX');
+        if (!address) document.getElementById('address').classList.add('animate__animated', 'animate__shakeX');
+        if (!contact) document.getElementById('contact').classList.add('animate__animated', 'animate__shakeX');
+        if (!product) document.getElementById('product').classList.add('animate__animated', 'animate__shakeX');
+        if (!quantity) document.getElementById('quantity').classList.add('animate__animated', 'animate__shakeX');
+        
+        // Remove animation after it completes
+        setTimeout(() => {
+          document.getElementById('name').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('address').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('contact').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('product').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('quantity').classList.remove('animate__animated', 'animate__shakeX');
+        }, 1000);
+        
+        return;
+      }
+
+      // Calculate total price
+      let price = 0;
+      switch(product) {
+        case 'Tomato': price = 30; break;
+        case 'Potato': price = 20; break;
+        case 'Spinach': price = 15; break;
+        case 'Carrot': price = 40; break;
+        case 'Onion': price = 25; break;
+      }
+      const total = price * parseInt(quantity);
+
+      const summaryText = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Address:</strong> ${address}<br>
+        <strong>Contact:</strong> ${contact}<br>
+        <strong>Product:</strong> ${product} (₹${price}/unit)<br>
+        <strong>Quantity:</strong> ${quantity}<br>
+        <strong style="color: var(--primary-dark); font-size: 1.1em;">Total Amount: ₹${total}</strong>
+      `;
+
+      document.getElementById('summaryContent').innerHTML = summaryText;
+      document.getElementById('orderSummary').style.display = 'block';
+      
+      // Scroll to summary
+      document.getElementById('orderSummary').scrollIntoView({ behavior: 'smooth' });
+      
+      showToast();
+      
+      // Add celebration animation
+      document.getElementById('orderSummary').classList.add('animate__animated', 'animate__tada');
+      setTimeout(() => {
+        document.getElementById('orderSummary').classList.remove('animate__animated', 'animate__tada');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

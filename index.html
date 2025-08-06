@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FarmConnect | Farm to Customer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f7fff7;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light-bg);
+      color: var(--text-dark);
+    }
+
+    /* Enhanced Navbar Styles */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 5%;
+      position: fixed;
+      width: 90%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(5px);
+      background-color: rgba(46, 125, 50, 0.9);
+      border-radius: 0 0 20px 20px;
+    }
+
+    .navbar.scrolled {
+      padding: 10px 5%;
+      background-color: rgba(27, 94, 32, 0.95);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      transition: all 0.4s ease;
+    }
+
+    .navbar a {
+      color: var(--white);
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar a i {
+      margin-right: 8px;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .navbar a::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+      border-radius: 8px;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s ease;
+      z-index: -1;
+    }
+
+    .navbar a:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .navbar a:hover i {
+      transform: translateX(3px);
+    }
+
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--secondary);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 3px;
+    }
+
+    .navbar a:hover::after {
+      width: 60%;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .logo i {
+      margin-right: 10px;
+      color: var(--secondary);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled .logo i {
+      transform: rotate(15deg);
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, var(--secondary) 0%, #e65100 100%);
+      color: var(--white);
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+    }
+
+    .btn-login i {
+      margin-right: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+    }
+
+    .btn-login:hover i {
+      transform: translateX(5px);
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-login:hover::before {
+      left: 100%;
+    }
+
+    /* Hamburger menu for mobile */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      width: 30px;
+      height: 20px;
+      position: relative;
+      z-index: 1001;
+    }
+
+    .hamburger span {
+      display: block;
+      position: absolute;
+      height: 3px;
+      width: 100%;
+      background: var(--white);
+      border-radius: 3px;
+      opacity: 1;
+      left: 0;
+      transform: rotate(0deg);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger span:nth-child(1) {
+      top: 0;
+    }
+
+    .hamburger span:nth-child(2), .hamburger span:nth-child(3) {
+      top: 10px;
+    }
+
+    .hamburger span:nth-child(4) {
+      top: 20px;
+    }
+
+    .hamburger.open span:nth-child(1) {
+      top: 10px;
+      width: 0%;
+      left: 50%;
+    }
+
+    .hamburger.open span:nth-child(2) {
+      transform: rotate(45deg);
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg);
+    }
+
+    .hamburger.open span:nth-child(4) {
+      top: 10px;
+      width: 0%;
+      left: 50%;
+    }
+
+    /* Mobile menu animation */
+    @media (max-width: 992px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(27, 94, 32, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        transition: all 0.5s ease;
+        z-index: 1000;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      .navbar a {
+        margin: 15px 0;
+        font-size: 1.1rem;
+        padding: 12px 20px;
+      }
+      
+      .btn-login {
+        margin: 20px 0 0 0;
+      }
+    }
+
+    /* Hero section with floating animation */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 150px 50px 50px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      flex-wrap: wrap;
+      min-height: 90vh;
+    }
+
+    .hero-text {
+      flex: 1;
+      min-width: 300px;
+      padding-right: 30px;
+    }
+
+    .hero-text h1 {
+      font-size: 3.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      margin: 15px 0 30px;
+      color: var(--text-light);
+      max-width: 500px;
+    }
+
+    .btn-cta, .btn-cta2 {
+      display: inline-block;
+      padding: 12px 30px;
+      margin-right: 15px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cta {
+      background-color: var(--primary);
+    }
+
+    .btn-cta:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-cta2 {
+      background-color: var(--secondary);
+    }
+
+    .btn-cta2:hover {
+      background-color: #f57c00;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-cta::before, .btn-cta2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-cta:hover::before, .btn-cta2:hover::before {
+      left: 100%;
+    }
+
+    .hero-image {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      transition: transform 0.5s ease;
+    }
+
+    .hero-image img:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    /* Features section with animated cards */
+    .features, .products {
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" fill="%23e8f5e9" xmlns="http://www.w3.org/2000/svg"><path fill-opacity="0.2" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat;
+      background-size: cover;
+      z-index: -1;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 4px;
+      bottom: -10px;
+      left: 20%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .feature-cards, .product-list {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .card, .product-card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      width: 250px;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .card::before, .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      transition: all 0.3s ease;
+    }
+
+    .card:hover::before, .product-card:hover::before {
+      height: 10px;
+    }
+
+    .card img, .product-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+    }
+
+    .card h3, .product-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    .card p, .product-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .card:hover, .product-card:hover {
+      transform: translateY(-10px) !important;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .card:hover img, .product-card:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .visible {
+      opacity: 1 !important;
+      transform: translateY(0px) !important;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Product cards with price tag animation */
+    .product-card {
+      text-align: center;
+    }
+
+    .product-card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      object-fit: cover;
+    }
+
+    .product-card p {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1.2rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .product-card p::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+
+    .product-card:hover p::after {
+      width: 100%;
+    }
+
+    /* Farmer Registration Form Styles */
+    .form-container {
+      max-width: 800px;
+      margin: 100px auto 50px;
+      padding: 30px;
+      background: var(--white);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .form-container h1 {
+      color: var(--primary-dark);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .form-btn {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .form-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-upload {
+      border: 2px dashed #ddd;
+      padding: 30px;
+      text-align: center;
+      border-radius: 8px;
+      margin: 20px 0;
+      cursor: pointer;
+    }
+
+    .product-upload:hover {
+      border-color: var(--primary);
+    }
+
+    #previewContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .preview-item {
+      width: 120px;
+      position: relative;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .price-input {
+      width: 100px;
+      padding: 8px;
+      margin-top: 5px;
+    }
+
+    /* Footer with wave animation */
+    footer {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      padding: 100px 20px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      background-color: rgba(27, 94, 32, 0.9);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+    }
+
+    .footer-wave {
+      position: absolute;
+      top: -60px;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" fill="%23ffffff" xmlns="http://www.w3.org/2000/svg"><path fill-opacity="1" d="M0,64L80,96C160,128,320,192,480,192C640,192,800,128,960,122.7C1120,117,1280,171,1360,197.3L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>') no-repeat;
+      background-size: cover;
+      z-index: 1;
+      animation: wave 8s linear infinite;
+    }
+
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1440px; }
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .footer-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .footer-content p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .footer-links a {
+      color: var(--white);
+      text-decoration: none;
+      margin: 10px 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+
+    .social-icons {
+      margin: 30px 0;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      margin: 0 10px;
+      border-radius: 50%;
+      background-color: rgba(255,255,255,0.1);
+      transition: all 0.4s ease;
+    }
+
+    .social-icons img {
+      width: 25px;
+      height: 25px;
+      filter: brightness(0) invert(1);
+    }
+
+    .social-icons a:hover {
+      background-color: var(--secondary);
+      transform: translateY(-5px) scale(1.1);
+    }
+
+    .newsletter {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .newsletter input {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 50px;
+      margin-right: 10px;
+      font-size: 14px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .newsletter input:focus {
+      outline: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transform: translateY(-2px);
+    }
+
+    .newsletter button {
+      background-color: var(--secondary);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .newsletter button:hover {
+      background-color: #e65100;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .copyright {
+      margin-top: 40px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Floating elements animation */
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 80px 20px 40px;
+        text-align: center;
+      }
+      
+      .hero-text {
+        padding-right: 0;
+        margin-bottom: 40px;
+      }
+      
+      .hero-text h1 {
+        font-size: 2.5rem;
+      }
+      
+      .btn-cta, .btn-cta2 {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+      }
+      
+      .form-container {
+        margin: 80px 20px 30px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="logo"><i class="fas fa-leaf"></i> FarmConnect</div>
+      
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <div class="nav-links" id="navLinks">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="Products.html"><i class="fas fa-shopping-basket"></i> Products</a>
+        <a href="order.html"><i class="fas fa-shopping-cart"></i> Order</a>
+        <a href="track.html"><i class="fas fa-map-marker-alt"></i> Track</a>
+        <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="login.html"><i class="fas fa-user"></i> Login & Register</a>  
+        <a href="visitfarm.html"><i class="fas fa-tractor"></i> Visit Farm</a>
+        <a href="rental.html"><i class="fas fa-tools"></i> Rental</a>
+        <a href="worker.html"><i class="fas fa-users"></i> Workers</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="hero">
+      <div class="hero-text animate__animated animate__fadeInLeft">
+        <h1>Fresh Vegetables Direct from Farmers</h1>
+        <p>Connecting farmers to customers for fresh, organic, and healthy produce. Enjoy farm-to-table goodness with just a click!</p>
+        <a href="#farmer-form" class="btn-cta animate__animated animate__pulse animate__infinite animate__slower">Join as Farmer</a>
+        <a href="Products.html" class="btn-cta2 animate__animated animate__pulse animate__infinite animate__slower">Shop Now</a>
+      </div>
+      <div class="hero-image animate__animated animate__fadeInRight">
+        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Farm fresh vegetables">
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <h2 class="section-title animate__animated animate__fadeIn">Why Choose FarmConnect?</h2>
+      <div class="feature-cards">
+        <div class="card scroll-anim">
+          <img src="https://cdn-icons-png.flaticon.com/512/3062/3062789.png" alt="Farmer">
+          <h3>Verified Farmers</h3>
+          <p>Only registered farmers with quality produce and sustainable practices</p>
+        </div>
+        <div class="card scroll-anim">
+          <img src="https://cdn-icons-png.flaticon.com/512/3712/3712159.png" alt="Delivery">
+          <h3>Fast Delivery</h3>
+          <p>Same-day delivery from local farms to your doorstep</p>
+        </div>
+        <div class="card scroll-anim">
+          <img src="https://cdn-icons-png.flaticon.com/512/3059/3059518.png" alt="Support">
+          <h3>24/7 Support</h3>
+          <p>Our team is always ready to assist you with any questions</p>
+        </div>
+        <div class="card scroll-anim">
+          <img src="https://cdn-icons-png.flaticon.com/512/2459/2459773.png" alt="Organic">
+          <h3>100% Organic</h3>
+          <p>Chemical-free produce grown with natural methods</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+      <h2 class="section-title animate__animated animate__fadeIn">Popular Vegetables</h2>
+      <div class="product-list">
+        <div class="product-card scroll-anim">
+          <img src="tomato.jpeg" alt="Tomato">
+          <h3>Organic Tomato</h3>
+          <p>₹30/kg</p>
+        </div>
+        <div class="product-card scroll-anim">
+          <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Potato">
+          <h3>Fresh Potato</h3>
+          <p>₹20/kg</p>
+        </div>
+        <div class="product-card scroll-anim">
+          <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Spinach">
+          <h3>Green Spinach</h3>
+          <p>₹15/bunch</p>
+        </div>
+        <div class="product-card scroll-anim">
+          <img src="carrots.jpg" alt="Carrot">
+          <h3>Sweet Carrot</h3>
+          <p>₹25/kg</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Farmer Registration Form Section -->
+    <section id="farmer-form" class="form-container">
+      <h1><i class="fas fa-leaf"></i> Join FarmConnect as a Farmer</h1>
+      
+      <form id="farmerForm">
+        <div class="form-group">
+          <label for="farmName">Farm Name</label>
+          <input type="text" id="farmName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="farmerName">Your Name</label>
+          <input type="text" id="farmerName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="location">Farm Location</label>
+          <input type="text" id="location" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input type="tel" id="contact" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="certification">Organic Certification (if any)</label>
+          <input type="text" id="certification">
+        </div>
+        
+        <h3>Add Your Products</h3>
+        
+        <div class="product-upload" onclick="document.getElementById('productImage').click()">
+          <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: var(--primary);"></i>
+          <p>Click to upload vegetable images</p>
+          <input type="file" id="productImage" accept="image/*" style="display: none;" onchange="previewImage()" multiple>
+        </div>
+        
+        <div id="previewContainer"></div>
+        
+        <div class="form-group">
+          <label for="productName">Vegetable Name</label>
+          <input type="text" id="productName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="productPrice">Price per kg/unit (₹)</label>
+          <input type="number" id="productPrice" class="price-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="productDescription">Description</label>
+          <textarea id="productDescription" rows="3"></textarea>
+        </div>
+        
+        <button type="button" class="form-btn" onclick="submitForm()">
+          <i class="fas fa-user-plus"></i> Complete Registration
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-wave"></div>
+    <div class="footer-content">
+      <h2 class="floating">FarmConnect</h2>
+      <p>Empowering Farmers | Delivering Freshness | Building Trust</p>
+
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="order.html">Orders</a>
+        <a href="visitfarm.html">Farm Visit</a>
+        <a href="rental.html">Rental</a>
+        <a href="worker.html">Workers</a>
+        <a href="dashboard.html">Dashboard</a>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://www.facebook.com/" class="animate__animated animate__fadeIn animate__delay-1s"><img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/" class="animate__animated animate__fadeIn animate__delay-2s"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+        <a href="https://twitter.com/" class="animate__animated animate__fadeIn animate__delay-3s"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+        <a href="https://www.youtube.com/" class="animate__animated animate__fadeIn animate__delay-4s"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+      </div>
+
+      <div class="newsletter">
+        <input type="email" placeholder="Your email for updates">
+        <button class="animate__animated animate__pulse animate__infinite animate__slower">Subscribe</button>
+      </div>
+
+      <div class="copyright">
+        &copy; 2025 FarmConnect. All rights reserved. | Made with ❤️ for farmers
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Enhanced Navbar JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      const navbar = document.getElementById('navbar');
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      
+      // Navbar scroll effect
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+      
+      // Hamburger menu toggle
+      hamburger.addEventListener('click', function() {
+        this.classList.toggle('open');
+        navLinks.classList.toggle('active');
+        
+        // Toggle body scroll when menu is open
+        if (navLinks.classList.contains('active')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Close mobile menu when clicking a link
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+          if (navLinks.classList.contains('active')) {
+            hamburger.classList.remove('open');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.scroll-anim').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Add ripple effect to buttons
+    document.querySelectorAll('.btn-cta, .btn-cta2, .btn-login, .form-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const x = e.clientX - e.target.getBoundingClientRect().left;
+        const y = e.clientY - e.target.getBoundingClientRect().top;
+        
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 1000);
+      });
+    });
+
+    // Add floating animation to product cards randomly
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.2}s`;
+    });
+
+    // Farmer Registration Form Functions
+    // Image preview function
+    function previewImage() {
+      const previewContainer = document.getElementById('previewContainer');
+      previewContainer.innerHTML = '';
+      
+      const files = document.getElementById('productImage').files;
+      
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const previewItem = document.createElement('div');
+          previewItem.className = 'preview-item';
+          
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          
+          previewItem.appendChild(img);
+          previewContainer.appendChild(previewItem);
+        }
+        
+        reader.readAsDataURL(files[i]);
+      }
+    }
+
+    // Form submission
+    function submitForm() {
+      const farmName = document.getElementById('farmName').value;
+      const farmerName = document.getElementById('farmerName').value;
+      const productName = document.getElementById('productName').value;
+      
+      if (!farmName || !farmerName || !productName) {
+        alert('Please fill all required fields');
+        return;
+      }
+      
+      // In a real application, you would send this data to a server
+      alert('Registration successful! Your products will now appear on our marketplace.');
+      
+      // Redirect to products page (optional)
+      window.location.href = 'Products.html';
+    }
+  </script>
+
+</body>
+</html>

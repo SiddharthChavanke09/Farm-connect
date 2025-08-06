@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farm Visit Booking | AgriConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f1f8e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      min-height: 100vh;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(241, 248, 233, 0.85);
+      z-index: -1;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    header p {
+      margin-top: 10px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+    }
+
+    .farm-visit-image {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .farm-visit-image img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    h2 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: rgba(232, 245, 233, 0.2);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+      background-color: var(--white);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 25px 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      .farm-visit-image img {
+        width: 120px;
+        height: 120px;
+      }
+
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Book a Farm Visit</h1>
+    <p>Explore fresh produce directly from Nashik's farms</p>
+  </header>
+
+  <div class="container">
+    <div class="farm-visit-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Farm Visit" class="animate__animated animate__fadeIn">
+    </div>
+
+    <h2 class="animate__animated animate__fadeIn">Farm Visit Request Form</h2>
+    <form id="visitForm">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" placeholder="Your name" required class="animate__animated animate__fadeIn">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Your email" required class="animate__animated animate__fadeIn">
+
+      <label for="date">Preferred Visit Date</label>
+      <input type="date" id="date" name="date" required class="animate__animated animate__fadeIn">
+
+      <label for="purpose">Purpose of Visit</label>
+      <textarea id="purpose" name="purpose" rows="3" placeholder="E.g., learning, purchasing, photography..." required class="animate__animated animate__fadeIn"></textarea>
+
+      <button type="button" onclick="submitVisit()" class="animate__animated animate__fadeIn">Submit Request</button>
+    </form>
+
+    <h2 style="margin-top: 40px;" class="animate__animated animate__fadeIn">Nashik Region Farm Map</h2>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119024.08892076885!2d73.67975891717317!3d20.003516285954125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddeb48ff1aa0c1%3A0x2cc53c390cf5fe3e!2sNashik%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1653249394533!5m2!1sen!2sin"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="animate__animated animate__fadeIn">
+    </iframe>
+  </div>
+
+  <a href="index.html" class="home-btn animate__animated animate__fadeInRight">🏠</a>
+
+  <script>
+    function submitVisit() {
+      const name = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const date = document.getElementById("date").value;
+      const purpose = document.getElementById("purpose").value.trim();
+
+      if (!name || !email || !date || !purpose) {
+        // Add shake animation to empty fields
+        if (!name) document.getElementById('fullname').classList.add('animate__animated', 'animate__shakeX');
+        if (!email) document.getElementById('email').classList.add('animate__animated', 'animate__shakeX');
+        if (!date) document.getElementById('date').classList.add('animate__animated', 'animate__shakeX');
+        if (!purpose) document.getElementById('purpose').classList.add('animate__animated', 'animate__shakeX');
+        
+        // Remove animation after it completes
+        setTimeout(() => {
+          document.getElementById('fullname').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('email').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('date').classList.remove('animate__animated', 'animate__shakeX');
+          document.getElementById('purpose').classList.remove('animate__animated', 'animate__shakeX');
+        }, 1000);
+        
+        return;
+      }
+
+      // Show success animation
+      document.querySelector('.farm-visit-image img').classList.add('animate__animated', 'animate__tada');
+      
+      setTimeout(() => {
+        alert("✅ Visit request submitted successfully!\nWe'll contact you soon.");
+        document.getElementById("visitForm").reset();
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>
