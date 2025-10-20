@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products - FramConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #2e8b57;
+      --primary-light: #3cb371;
+      --primary-dark: #256e48;
+      --secondary: #ffa500;
+      --white: #ffffff;
+      --light-bg: #f0fff0;
+      --text-dark: #2e2e2e;
+      --text-light: #555555;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--light-bg);
+      margin: 0;
+      padding: 0;
+      color: var(--text-dark);
+    }
+
+    .simple-header {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .simple-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      animation: fadeInDown 1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .simple-header h1 i {
+      margin-right: 10px;
+      color: var(--secondary);
+    }
+
+    .search-section {
+      text-align: center;
+      margin: 30px 0;
+      padding: 0 20px;
+      animation: fadeIn 1s ease 0.3s both;
+    }
+
+    .search-section input {
+      width: 60%;
+      max-width: 500px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: 2px solid var(--primary);
+      border-radius: 50px;
+      outline: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .search-section input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+    }
+
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid #e0e0e0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s ease forwards;
+      position: relative;
+    }
+
+    .product-card:nth-child(1) { animation-delay: 0.4s; }
+    .product-card:nth-child(2) { animation-delay: 0.5s; }
+    .product-card:nth-child(3) { animation-delay: 0.6s; }
+    .product-card:nth-child(4) { animation-delay: 0.7s; }
+    .product-card:nth-child(5) { animation-delay: 0.8s; }
+
+    .product-card:hover {
+      transform: translateY(-10px) !important;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: all 0.5s ease;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.1) rotate(2deg);
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0 5px;
+      color: var(--primary-dark);
+      font-size: 1.3rem;
+    }
+
+    .product-card .price {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 10px 0;
+      display: inline-block;
+      position: relative;
+    }
+
+    .product-card .price::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: var(--secondary);
+      transition: width 0.3s ease;
+    }
+
+    .product-card:hover .price::after {
+      width: 100%;
+    }
+
+    .product-card button {
+      margin: 10px;
+      padding: 10px 25px;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .product-card button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .product-card button:hover::before {
+      left: 100%;
+    }
+
+    /* Floating animation for product cards */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Pulse animation for featured product */
+    .featured {
+      position: relative;
+      border: 2px solid var(--secondary);
+    }
+
+    .featured::after {
+      content: 'Featured';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--secondary);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Back to Home button */
+    .back-to-home {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .back-to-home button {
+      padding: 12px 30px;
+      background: var(--secondary);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-to-home button:hover {
+      background: #e69500;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Home button floating icon */
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .search-section input {
+        width: 80%;
+      }
+      
+      .product-list {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .product-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="simple-header">
+    <h1><i class="fas fa-leaf"></i> FramConnect Products</h1>
+  </header>
+
+  <section class="search-section">
+    <input type="text" id="searchBox" placeholder="Search for vegetables...">
+  </section>
+
+  <section class="product-list" id="productList">
+    </section>
+
+  <a href="index.html" class="home-btn animate__animated animate__fadeInRight">🏠</a>
+
+  <script>
+    const list = document.getElementById("productList");
+    const searchBox = document.getElementById("searchBox");
+
+    // Function to display products
+    function displayProducts(filteredProducts) {
+      if (filteredProducts.length === 0) {
+        list.innerHTML = `<p style="text-align: center; color: var(--text-light); font-size: 1.2rem;">No products found.</p>`;
+        return;
+      }
+      
+      list.innerHTML = filteredProducts.map(product => `
+        <div class="product-card">
+            <div class="product-image">
+                <img src="${product.image || 'https://via.placeholder.com/150'}" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="price">₹${product.price}/${product.category === 'vegetables' || product.category === 'fruits' ? 'kg' : 'unit'}</p>
+                <p class="farmer">By ${product.farmer.name}</p>
+                <button onclick="orderProduct(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                    Order Now
+                </button>
+            </div>
+        </div>
+    `).join('');
+    }
+
+    // --- NEW: Fetch products from the server ---
+    async function fetchProducts() {
+      try {
+        const response = await fetch('http://localhost:3000/api/products');
+        const products = await response.json();
+        
+        displayProducts(products);
+        
+        // Update search functionality to use the fetched data
+        searchBox.addEventListener("input", () => {
+          const keyword = searchBox.value.toLowerCase();
+          const filtered = products.filter(p => p.name.toLowerCase().includes(keyword) || p.category.toLowerCase().includes(keyword));
+          displayProducts(filtered);
+        });
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        list.innerHTML = `<p style="text-align: center; color: #f44336; font-size: 1.2rem;">Failed to load products. Please check the server connection.</p>`;
+      }
+    }
+    
+    // Function to handle the "Order Now" button click
+    function orderProduct(product) {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (!userData || userData.role !== 'customer') {
+            alert('Please log in as a customer to place an order.');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Store selected product details in sessionStorage
+        sessionStorage.setItem('selectedProduct', JSON.stringify(product));
+        window.location.href = 'order.html';
+    }
+
+    // Initial call to fetch and display products
+    document.addEventListener("DOMContentLoaded", fetchProducts);
+  </script>
+</body>
+</html>

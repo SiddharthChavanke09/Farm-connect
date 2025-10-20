@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Products | FramConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #e8f5e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+      --error: #f44336;
+      --success: #4caf50;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('https://images.unsplash.com/photo-1582281298052-2a3a601b5d3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      background-attachment: fixed;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(232, 245, 233, 0.85);
+      z-index: -1;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    header p {
+      margin-top: 10px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+    }
+
+    .product-info-card {
+      background-color: var(--light-bg);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .product-info-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product-info-card h3 {
+      margin: 0;
+      color: var(--primary-dark);
+    }
+
+    .product-info-card p {
+      margin: 5px 0;
+    }
+
+    h2 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background-color: rgba(232, 245, 233, 0.2);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+      background-color: var(--white);
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .success {
+      color: var(--success);
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 14px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    .summary {
+      background-color: rgba(232, 245, 233, 0.5);
+      padding: 25px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border-left: 5px solid var(--primary-light);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .summary h3 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+    }
+
+    .summary p {
+      line-height: 1.8;
+      color: var(--text-dark);
+    }
+
+    .actions {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .actions a {
+      text-decoration: none;
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .actions a:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      margin-top: 60px;
+    }
+
+    #toast {
+      visibility: hidden;
+      min-width: 280px;
+      background-color: var(--primary);
+      color: var(--white);
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      bottom: 40px;
+      font-size: 16px;
+      font-weight: 500;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(-20px);
+    }
+    
+    .track-order-section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: rgba(232, 245, 233, 0.5);
+      border-radius: 10px;
+      border-left: 5px solid var(--secondary);
+    }
+    
+    .track-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .track-form input {
+      flex: 1;
+    }
+    
+    .track-form button {
+      margin-top: 0;
+      padding: 12px 20px;
+    }
+    
+    .order-status {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+    
+    .status-timeline {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      position: relative;
+    }
+    
+    .status-timeline::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: #ddd;
+      z-index: 1;
+    }
+    
+    .status-step {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+    
+    .status-bubble {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      color: white;
+      font-weight: bold;
+    }
+    
+    .status-step.active .status-bubble {
+      background-color: var(--success);
+    }
+    
+    .status-step.completed .status-bubble {
+      background-color: var(--primary);
+    }
+    
+    .status-label {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    
+    .status-step.active .status-label,
+    .status-step.completed .status-label {
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .veg-item img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+      
+      .track-form {
+        flex-direction: column;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Order Products</h1>
+    <p>Get quality produce straight from farms to your doorstep</p>
+  </header>
+
+  <div class="container">
+    <div id="productInfoCard" class="product-info-card" style="display: none;">
+      <img id="productImage" src="" alt="Product Image">
+      <div>
+        <h3 id="productName"></h3>
+        <p>Price: ₹<span id="productPrice"></span></p>
+        <p>By: <span id="farmerName"></span></p>
+        <p id="productDescription"></p>
+      </div>
+    </div>
+    
+    <h2>Fill Your Order Details</h2>
+    
+    <form id="orderForm">
+      <label for="customerEmail">Email Address*</label>
+      <input type="email" id="customerEmail" name="customerEmail" placeholder="Enter your email for order tracking" required>
+      
+      <label for="customerName">Full Name*</label>
+      <input type="text" id="customerName" name="customerName" placeholder="Enter your full name" required>
+
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+      <label for="deliveryAddress">Delivery Address</label>
+      <textarea id="deliveryAddress" name="deliveryAddress" rows="3" placeholder="Enter delivery address" required></textarea>
+
+      <button type="button" class="submit-btn" onclick="submitOrder()">Place Order</button>
+    </form>
+
+    <div class="summary" id="orderSummary" style="display: none;">
+      <h3>Order Summary</h3>
+      <p id="summaryContent"></p>
+      <div class="actions">
+        <a href="index.html">🏠 Go to Home</a>
+        <a href="customer_dashboard.html">📊 My Dashboard</a>
+        <button class="actions-btn" onclick="copyOrderId()">📋 Copy Order ID</button>
+      </div>
+    </div>
+    
+    <div class="track-order-section">
+      <h3>Track Your Order</h3>
+      <p>Enter your order ID to check the status</p>
+      <div class="track-form">
+        <input type="text" id="trackOrderId" placeholder="Enter your order ID">
+        <button onclick="trackOrder()">Track Order</button>
+      </div>
+      <div class="order-status" id="orderStatus">
+        <h4>Order Status: <span id="statusText">Processing</span></h4>
+        <div class="status-timeline">
+          <div class="status-step" id="step1">
+            <div class="status-bubble">1</div>
+            <div class="status-label">Order Placed</div>
+          </div>
+          <div class="status-step" id="step2">
+            <div class="status-bubble">2</div>
+            <div class="status-label">Processing</div>
+          </div>
+          <div class="status-step" id="step3">
+            <div class="status-bubble">3</div>
+            <div class="status-label">Shipped</div>
+          </div>
+          <div class="status-step" id="step4">
+            <div class="status-bubble">4</div>
+            <div class="status-label">Delivered</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  
+  <a href="index.html" class="home-btn">🏠</a>
+
+  <script>
+    let selectedProduct = null;
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      
+      if (type === 'error') {
+        toast.style.backgroundColor = '#f44336';
+      } else if (type === 'success') {
+        toast.style.backgroundColor = '#4caf50';
+      } else {
+        toast.style.backgroundColor = '#2e7d32';
+      }
+      
+      toast.className = 'show';
+      
+      setTimeout(() => {
+        toast.className = toast.className.replace('show', '');
+      }, 3000);
+    }
+
+    async function submitOrder() {
+      const form = document.getElementById('orderForm');
+      const customerEmail = document.getElementById('customerEmail').value;
+      const customerName = document.getElementById('customerName').value;
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const deliveryAddress = document.getElementById('deliveryAddress').value;
+      
+      if (!selectedProduct) {
+        showToast('No product selected.', 'error');
+        return;
+      }
+      
+      if (!customerEmail || !customerName || isNaN(quantity) || quantity <= 0 || !deliveryAddress) {
+        showToast('Please fill all required fields correctly', 'error');
+        return;
+      }
+
+      const productPrice = parseFloat(selectedProduct.price);
+      if (isNaN(productPrice)) {
+        showToast('Invalid product price.', 'error');
+        return;
+      }
+      
+      const totalAmount = productPrice * quantity;
+      
+      try {
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.textContent = 'Placing Order...';
+        submitBtn.disabled = true;
+        
+        const response = await fetch('http://localhost:3000/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            customerEmail,
+            customerName,
+            vegetable: selectedProduct.name,
+            quantity,
+            deliveryAddress,
+            totalAmount
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to place order');
+        }
+        
+        showToast('Order placed successfully!', 'success');
+        
+        const orderSummary = document.getElementById('orderSummary');
+        const summaryContent = document.getElementById('summaryContent');
+        
+        summaryContent.innerHTML = `
+          <strong>Order ID:</strong> ${data.order.orderId}<br>
+          <strong>Name:</strong> ${customerName}<br>
+          <strong>Email:</strong> ${customerEmail}<br>
+          <strong>Product:</strong> ${selectedProduct.name}<br>
+          <strong>Quantity:</strong> ${quantity}<br>
+          <strong>Delivery Address:</strong> ${deliveryAddress}<br>
+          <strong>Total Amount:</strong> ₹${totalAmount.toFixed(2)}<br>
+          <strong>Status:</strong> ${data.order.status}
+        `;
+        
+        orderSummary.style.display = 'block';
+        form.reset();
+        
+      } catch (error) {
+        console.error('Order submission error:', error);
+        showToast(`Error: ${error.message}`, 'error');
+      } finally {
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.textContent = 'Place Order';
+        submitBtn.disabled = false;
+      }
+    }
+
+    function copyOrderId() {
+      const orderId = document.getElementById('summaryContent').textContent.match(/Order ID:\s+(\w+)/)[1];
+      navigator.clipboard.writeText(orderId)
+        .then(() => {
+          showToast('Order ID copied to clipboard!');
+        })
+        .catch(err => {
+          showToast('Failed to copy Order ID', 'error');
+        });
+    }
+    
+    async function trackOrder() {
+      const orderId = document.getElementById('trackOrderId').value;
+      
+      if (!orderId) {
+        showToast('Please enter an order ID', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`http://localhost:3000/api/orders/${orderId}`);
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch order details');
+        }
+        
+        const orderStatus = document.getElementById('orderStatus');
+        const statusText = document.getElementById('statusText');
+        
+        statusText.textContent = data.status;
+        
+        const statusSteps = {
+          'placed': 1,
+          'confirmed': 2,
+          'processing': 2,
+          'shipped': 3,
+          'delivered': 4,
+          'cancelled': 0
+        };
+        
+        const currentStep = statusSteps[data.status] || 0;
+        
+        for (let i = 1; i <= 4; i++) {
+          const step = document.getElementById(`step${i}`);
+          step.className = 'status-step';
+        }
+        
+        for (let i = 1; i < currentStep; i++) {
+          const step = document.getElementById(`step${i}`);
+          step.className = 'status-step completed';
+        }
+        
+        if (currentStep > 0) {
+          const step = document.getElementById(`step${currentStep}`);
+          step.className = 'status-step active';
+        }
+        
+        orderStatus.style.display = 'block';
+        
+      } catch (error) {
+        console.error('Order tracking error:', error);
+        showToast(`Error: ${error.message}`, 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedProduct = sessionStorage.getItem('selectedProduct');
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      
+      if (!storedProduct) {
+          showToast('No product selected. Redirecting to products page...', 'error');
+          setTimeout(() => window.location.href = 'Products.html', 2000);
+          return;
+      }
+      
+      selectedProduct = JSON.parse(storedProduct);
+      
+      document.getElementById('productInfoCard').style.display = 'flex';
+      document.getElementById('productImage').src = selectedProduct.image;
+      document.getElementById('productName').textContent = selectedProduct.name;
+      document.getElementById('productPrice').textContent = selectedProduct.price;
+      document.getElementById('farmerName').textContent = selectedProduct.farmer.name;
+      document.getElementById('productDescription').textContent = selectedProduct.description;
+      
+      if (userData) {
+          document.getElementById('customerEmail').value = userData.email;
+          document.getElementById('customerName').value = `${userData.firstName} ${userData.lastName}`;
+          
+          const address = userData.address;
+          if (address && address.street && address.city && address.state && address.zipCode) {
+            document.getElementById('deliveryAddress').value = `${address.street}, ${address.city}, ${address.state} - ${address.zipCode}`;
+          }
+      }
+    });
+  </script>
+</body>
+</html>

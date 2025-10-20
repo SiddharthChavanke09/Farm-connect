@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Registration | FarmConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    /* Your existing CSS styles remain the same */
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f7fff7;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+      --error: #f44336;
+      --success: #4caf50;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(247, 255, 247, 0.9);
+      z-index: -1;
+    }
+
+    .registration-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: var(--white);
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      margin: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .registration-image {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .registration-image::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .registration-image::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .registration-image img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .registration-image h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .registration-image p {
+      opacity: 0.9;
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .registration-form {
+      padding: 40px;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h1 {
+      color: var(--primary-dark);
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-col {
+      flex: 1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+    }
+
+    .form-group .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 40px;
+      color: var(--text-light);
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .success-message {
+      color: var(--success);
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .terms-checkbox {
+      display: flex;
+      align-items: flex-start;
+      margin: 25px 0;
+    }
+
+    .terms-checkbox input {
+      margin-right: 10px;
+      margin-top: 3px;
+    }
+
+    .terms-checkbox label {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .terms-checkbox a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .terms-checkbox a:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .password-strength {
+      height: 4px;
+      background-color: #eee;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .strength-meter {
+      height: 100%;
+      width: 0;
+      background-color: var(--error);
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .registration-container {
+        grid-template-columns: 1fr;
+      }
+
+      .registration-image {
+        display: none;
+      }
+
+      .registration-form {
+        padding: 30px 20px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .notification.success {
+      background-color: var(--success);
+    }
+    
+    .notification.error {
+      background-color: var(--error);
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+    
+    .notification i {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="notification" class="notification" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+    <span id="notification-message"></span>
+  </div>
+
+  <div class="registration-container">
+    <div class="registration-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/3712/3712159.png" alt="Customer Registration">
+      <h2>Join FarmConnect Today</h2>
+      <p>Get access to fresh, organic produce directly from local farmers</p>
+    </div>
+
+    <div class="registration-form">
+      <div class="form-header">
+        <h1 class="animate__animated animate__fadeIn">Create Account</h1>
+        <p class="animate__animated animate__fadeIn">Fill in your details to get started</p>
+      </div>
+
+      <form id="customerRegisterForm">
+        <div class="form-row">
+          <div class="form-col animate-on-scroll">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+              <div class="error-message" id="firstNameError">Please enter your first name</div>
+            </div>
+          </div>
+          <div class="form-col animate-on-scroll">
+            <div class="form-group">
+              <label for="lastName">Last Name*</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+              <div class="error-message" id="lastNameError">Please enter your last name</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animate-on-scroll">
+          <div class="form-group">
+            <label for="email">Email Address*</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <i class="fas fa-envelope input-icon"></i>
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
+            <div class="success-message" id="emailSuccess">Email available</div>
+          </div>
+        </div>
+
+        <div class="animate-on-scroll">
+          <div class="form-group">
+            <label for="phone">Phone Number*</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            <i class="fas fa-phone input-icon"></i>
+            <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+          </div>
+        </div>
+
+        <div class="form-row animate-on-scroll">
+          <div class="form-col">
+            <div class="form-group">
+              <label for="password">Password*</label>
+              <input type="password" id="password" name="password" placeholder="Create a password" required>
+              <i class="fas fa-lock input-icon"></i>
+              <div class="password-strength">
+                <div class="strength-meter" id="strengthMeter"></div>
+              </div>
+              <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+            </div>
+          </div>
+          <div class="form-col">
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password*</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+              <i class="fas fa-lock input-icon"></i>
+              <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animate-on-scroll">
+          <div class="form-group">
+            <label for="address">Delivery Address*</label>
+            <input type="text" id="address" name="address" placeholder="Enter your full address" required>
+            <i class="fas fa-map-marker-alt input-icon"></i>
+            <div class="error-message" id="addressError">Please enter your address</div>
+          </div>
+        </div>
+
+        <div class="form-row animate-on-scroll">
+          <div class="form-col">
+            <div class="form-group">
+              <label for="city">City*</label>
+              <input type="text" id="city" name="city" placeholder="Enter your city" required>
+              <div class="error-message" id="cityError">Please enter your city</div>
+            </div>
+          </div>
+          <div class="form-col">
+            <div class="form-group">
+              <label for="state">State*</label>
+              <select id="state" name="state" required>
+                <option value="">Select State</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="West Bengal">West Bengal</option>
+              </select>
+              <div class="error-message" id="stateError">Please select your state</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animate-on-scroll">
+          <div class="form-group">
+            <label for="pincode">Pincode*</label>
+            <input type="text" id="pincode" name="pincode" placeholder="Enter your pincode" required>
+            <div class="error-message" id="pincodeError">Please enter a valid pincode</div>
+          </div>
+        </div>
+
+        <div class="terms-checkbox animate-on-scroll">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
+        </div>
+        <div class="error-message" id="termsError" style="margin-top: -15px; margin-bottom: 15px;">You must agree to the terms</div>
+
+        <button type="button" class="submit-btn animate-on-scroll" onclick="registerCustomer()">
+          <i class="fas fa-user-plus"></i> Create Account
+        </button>
+
+        <div class="login-link animate-on-scroll">
+          Already have an account? <a href="login.html">Login here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Get CSS variables
+    const root = document.documentElement;
+    const errorColor = getComputedStyle(root).getPropertyValue('--error').trim();
+    const successColor = getComputedStyle(root).getPropertyValue('--success').trim();
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Show notification function
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      const messageEl = document.getElementById('notification-message');
+      
+      messageEl.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.style.display = 'flex';
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 300);
+      }, 5000);
+    }
+
+    // Form validation functions
+    function validateName(name, errorId) {
+      const value = document.getElementById(name).value.trim();
+      const errorElement = document.getElementById(errorId);
+      
+      if (!value) {
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (!/^[a-zA-Z ]+$/.test(value)) {
+        errorElement.textContent = 'Only letters and spaces allowed';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateEmail() {
+      const email = document.getElementById('email').value.trim();
+      const errorElement = document.getElementById('emailError');
+      const successElement = document.getElementById('emailSuccess');
+      
+      if (!email) {
+        errorElement.textContent = 'Email is required';
+        errorElement.style.display = 'block';
+        successElement.style.display = 'none';
+        return false;
+      }
+      
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorElement.textContent = 'Please enter a valid email';
+        errorElement.style.display = 'block';
+        successElement.style.display = 'none';
+        return false;
+      }
+      
+      // Check if email exists via API
+      checkEmailAvailability(email)
+        .then(isAvailable => {
+          if (isAvailable) {
+            errorElement.style.display = 'none';
+            successElement.style.display = 'block';
+          } else {
+            errorElement.textContent = 'Email already registered';
+            errorElement.style.display = 'block';
+            successElement.style.display = 'none';
+          }
+        })
+        .catch(() => {
+          // If API check fails, assume email is available for UI purposes
+          errorElement.style.display = 'none';
+          successElement.style.display = 'block';
+        });
+      
+      return true;
+    }
+
+    async function checkEmailAvailability(email) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/check-email?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        return !data.exists;
+      } catch (error) {
+        console.error('Email check error:', error);
+        return true; // Assume email is available if check fails
+      }
+    }
+
+    function validatePhone() {
+      const phone = document.getElementById('phone').value.trim();
+      const errorElement = document.getElementById('phoneError');
+      
+      if (!phone) {
+        errorElement.textContent = 'Phone number is required';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (!/^[0-9]{10}$/.test(phone)) {
+        errorElement.textContent = 'Please enter a valid 10-digit phone number';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validatePassword() {
+      const password = document.getElementById('password').value;
+      const errorElement = document.getElementById('passwordError');
+      const strengthMeter = document.getElementById('strengthMeter');
+      
+      if (!password) {
+        errorElement.textContent = 'Password is required';
+        errorElement.style.display = 'block';
+        strengthMeter.style.width = '0%';
+        strengthMeter.style.backgroundColor = errorColor;
+        return false;
+      }
+      
+      if (password.length < 6) {
+        errorElement.textContent = 'Password must be at least 6 characters';
+        errorElement.style.display = 'block';
+        strengthMeter.style.width = '20%';
+        strengthMeter.style.backgroundColor = errorColor;
+        return false;
+      }
+      
+      // Calculate password strength
+      let strength = 0;
+      if (password.length >= 8) strength += 20;
+      if (/[A-Z]/.test(password)) strength += 20;
+      if (/[0-9]/.test(password)) strength += 20;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+      if (password.length >= 12) strength += 20;
+      
+      strengthMeter.style.width = `${strength}%`;
+      
+      if (strength < 30) {
+        strengthMeter.style.backgroundColor = errorColor;
+        errorElement.textContent = 'Password is weak';
+        errorElement.style.display = 'block';
+        return false;
+      } else if (strength < 80) {
+        strengthMeter.style.backgroundColor = '#ff9800';
+      } else {
+        strengthMeter.style.backgroundColor = successColor;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateConfirmPassword() {
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const errorElement = document.getElementById('confirmPasswordError');
+      
+      if (!confirmPassword) {
+        errorElement.textContent = 'Please confirm your password';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (password !== confirmPassword) {
+        errorElement.textContent = 'Passwords do not match';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateAddress() {
+      const address = document.getElementById('address').value.trim();
+      const errorElement = document.getElementById('addressError');
+      
+      if (!address) {
+        errorElement.textContent = 'Address is required';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (address.length < 10) {
+        errorElement.textContent = 'Please enter a complete address';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateCity() {
+      const city = document.getElementById('city').value.trim();
+      const errorElement = document.getElementById('cityError');
+      
+      if (!city) {
+        errorElement.textContent = 'City is required';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateState() {
+      const state = document.getElementById('state').value;
+      const errorElement = document.getElementById('stateError');
+      
+      if (!state) {
+        errorElement.textContent = 'State is required';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validatePincode() {
+      const pincode = document.getElementById('pincode').value.trim();
+      const errorElement = document.getElementById('pincodeError');
+      
+      if (!pincode) {
+        errorElement.textContent = 'Pincode is required';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      if (!/^[0-9]{6}$/.test(pincode)) {
+        errorElement.textContent = 'Please enter a valid 6-digit pincode';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    function validateTerms() {
+      const terms = document.getElementById('terms').checked;
+      const errorElement = document.getElementById('termsError');
+      
+      if (!terms) {
+        errorElement.textContent = 'You must agree to the terms and conditions';
+        errorElement.style.display = 'block';
+        return false;
+      }
+      
+      errorElement.style.display = 'none';
+      return true;
+    }
+
+    // Real-time validation
+    document.getElementById('firstName').addEventListener('input', () => validateName('firstName', 'firstNameError'));
+    document.getElementById('lastName').addEventListener('input', () => validateName('lastName', 'lastNameError'));
+    document.getElementById('email').addEventListener('input', validateEmail);
+    document.getElementById('phone').addEventListener('input', validatePhone);
+    document.getElementById('password').addEventListener('input', validatePassword);
+    document.getElementById('confirmPassword').addEventListener('input', validateConfirmPassword);
+    document.getElementById('address').addEventListener('input', validateAddress);
+    document.getElementById('city').addEventListener('input', validateCity);
+    document.getElementById('state').addEventListener('change', validateState);
+    document.getElementById('pincode').addEventListener('input', validatePincode);
+    document.getElementById('terms').addEventListener('change', validateTerms);
+
+    // Register customer function - FIXED
+    async function registerCustomer() {
+      const isValid = [
+        validateName('firstName', 'firstNameError'),
+        validateName('lastName', 'lastNameError'),
+        validateEmail(),
+        validatePhone(),
+        validatePassword(),
+        validateConfirmPassword(),
+        validateAddress(),
+        validateCity(),
+        validateState(),
+        validatePincode(),
+        validateTerms()
+      ].every(valid => valid);
+
+      if (!isValid) {
+        // Scroll to first error
+        const firstError = document.querySelector('.error-message[style="display: block;"]');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      // Show loading state
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+      submitBtn.disabled = true;
+
+      try {
+        // Send registration request to the correct endpoint
+        const response = await fetch('http://localhost:3000/api/register/customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+            phone: document.getElementById('phone').value.trim(),
+            address: {
+              street: document.getElementById('address').value.trim(),
+              city: document.getElementById('city').value.trim(),
+              state: document.getElementById('state').value,
+              zipCode: document.getElementById('pincode').value.trim()
+            }
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Store the token and user data
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userData', JSON.stringify(data.user));
+          localStorage.setItem('userRole', 'customer');
+          
+          showNotification('Registration successful! Redirecting to your dashboard...');
+          
+          // Redirect to customer dashboard after a short delay
+          setTimeout(() => {
+            window.location.href = 'customer_dashboard.html';
+          }, 2000);
+        } else {
+          // Show error message
+          showNotification(data.error || 'Registration failed. Please try again.', 'error');
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('Failed to connect to server. Please try again.', 'error');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

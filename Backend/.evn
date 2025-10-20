@@ -1,0 +1,7 @@
+[file name]: .env
+[file content begin]
+MONGODB_URI=mongodb://localhost:27017/farmconnect
+JWT_SECRET=your-super-secret-jwt-key-here-change-this-in-production
+ADMIN_EMAIL=admin@farmconnect.com
+ADMIN_PASSWORD=admin123
+[file content end]

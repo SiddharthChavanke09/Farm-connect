@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farmer Dashboard | AgriConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f1f8e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .header {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .user-avatar:hover {
+      transform: scale(1.1);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 250px;
+      height: calc(100vh - 80px);
+      background-color: var(--white);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+      padding: 20px 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 25px;
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+      background-color: var(--light-bg);
+      color: var(--primary-dark);
+      border-left: 4px solid var(--primary);
+    }
+
+    .sidebar-menu i {
+      margin-right: 10px;
+      font-size: 18px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      margin-top: 80px;
+      padding: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .page-title {
+      color: var(--primary-dark);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-title h1 {
+      font-size: 28px;
+      margin: 0;
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--primary);
+    }
+
+    .stat-card h3 {
+      color: var(--text-light);
+      font-size: 14px;
+      margin: 0 0 10px 0;
+      font-weight: 500;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin: 0;
+    }
+
+    .stat-card .change {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .stat-card .change.positive {
+      color: #4caf50;
+    }
+
+    .stat-card .change.negative {
+      color: #f44336;
+    }
+
+    .orders-table {
+      background-color: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 30px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .table-header h3 {
+      margin: 0;
+      color: var(--primary-dark);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background-color: var(--light-bg);
+      border-radius: 8px;
+      padding: 8px 15px;
+      width: 250px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      padding: 5px;
+      width: 100%;
+      outline: none;
+    }
+
+    .search-box i {
+      color: var(--text-light);
+      margin-right: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 15px;
+      color: var(--text-light);
+      font-weight: 500;
+      border-bottom: 1px solid #eee;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      color: var(--text-dark);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: var(--light-bg);
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status.pending {
+      background-color: #fff3e0;
+      color: #ff6d00;
+    }
+
+    .status.completed {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status.shipped {
+      background-color: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn.view {
+      background-color: var(--primary-light);
+      color: white;
+    }
+
+    .action-btn.update {
+      background-color: var(--secondary);
+      color: white;
+      margin-left: 5px;
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .add-product-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .add-product-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .home-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: var(--white);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 100;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      animation: pulse 2s infinite;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      background-color: #e65100;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 15px 20px;
+      }
+      .stats-cards {
+        grid-template-columns: 1fr;
+      }
+      .search-box {
+        width: 100%;
+        margin-top: 10px;
+      }
+      .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .home-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+
+    /* Animation classes for scroll */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Product modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+      animation: slideUp 0.4s ease-out;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .close-modal:hover {
+      color: var(--primary-dark);
+      transform: rotate(90deg);
+    }
+
+    .modal h2 {
+      color: var(--primary-dark);
+      margin-top: 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+    }
+
+    .submit-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/3209/3209268.png" alt="AgriConnect">
+      <span>FarmConnect Farmer</span>
+    </div>
+    <div class="user-info">
+      <span id="userName">John Farmer</span>
+      <div class="user-avatar" id="userAvatar">JF</div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <ul class="sidebar-menu">
+      <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="#"><i class="fas fa-shopping-basket"></i> Orders</a></li>
+      <li><a href="#"><i class="fas fa-box-open"></i> Products</a></li>
+      <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
+      <li><a href="#"><i class="fas fa-truck"></i> Delivery</a></li>
+      <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+      <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="page-title">
+      <h1>Order Management</h1>
+      <button class="add-product-btn" id="addProductBtn">
+        <i class="fas fa-plus"></i> Add Product
+      </button>
+    </div>
+
+    <div class="stats-cards">
+      <div class="stat-card animate-on-scroll">
+        <h3>Total Orders</h3>
+        <p class="value">24</p>
+        <p class="change positive"><i class="fas fa-arrow-up"></i> 12% from last week</p>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <h3>Pending Orders</h3>
+        <p class="value">5</p>
+        <p class="change negative"><i class="fas fa-arrow-down"></i> 2 from yesterday</p>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <h3>Completed Orders</h3>
+        <p class="value">18</p>
+        <p class="change positive"><i class="fas fa-arrow-up"></i> 5 from last week</p>
+      </div>
+      <div class="stat-card animate-on-scroll">
+        <h3>Total Revenue</h3>
+        <p class="value">1,245</p>
+        <p class="change positive"><i class="fas fa-arrow-up"></i> 18% from last week</p>
+      </div>
+    </div>
+
+    <div class="orders-table">
+      <div class="table-header">
+        <h3>Recent Orders</h3>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search orders...">
+        </div>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Products</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="animate-on-scroll">
+            <td>#AC-1024</td>
+            <td>Sarah Johnson</td>
+            <td>Tomatoes (5kg), Carrots (3kg)</td>
+            <td>May 15, 2023</td>
+            <td>45.50</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>
+              <button class="action-btn view">View</button>
+              <button class="action-btn update">Update</button>
+            </td>
+          </tr>
+          <tr class="animate-on-scroll">
+            <td>#AC-1023</td>
+            <td>Michael Brown</td>
+            <td>Potatoes (10kg), Onions (5kg)</td>
+            <td>May 14, 2023</td>
+            <td>38.75</td>
+            <td><span class="status shipped">Shipped</span></td>
+            <td>
+              <button class="action-btn view">View</button>
+              <button class="action-btn update">Update</button>
+            </td>
+          </tr>
+          <tr class="animate-on-scroll">
+            <td>#AC-1022</td>
+            <td>Emily Davis</td>
+            <td>Apples (4kg), Bananas (2kg)</td>
+            <td>May 14, 2023</td>
+            <td>29.90</td>
+            <td><span class="status pending">Pending</span></td>
+            <td>
+              <button class="action-btn view">View</button>
+              <button class="action-btn update">Update</button>
+            </td>
+          </tr>
+          <tr class="animate-on-scroll">
+            <td>#AC-1021</td>
+            <td>Robert Wilson</td>
+            <td>Lettuce (2), Cucumbers (5)</td>
+            <td>May 13, 2023</td>
+            <td>22.40</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>
+              <button class="action-btn view">View</button>
+              <button class="action-btn update">Update</button>
+            </td>
+          </tr>
+          <tr class="animate-on-scroll">
+            <td>#AC-1020</td>
+            <td>Jennifer Lee</td>
+            <td>Strawberries (3kg), Blueberries (2kg)</td>
+            <td>May 12, 2023</td>
+            <td>52.60</td>
+            <td><span class="status pending">Pending</span></td>
+            <td>
+              <button class="action-btn view">View</button>
+              <button class="action-btn update">Update</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h2>Add New Product</h2>
+      <form id="productForm">
+        <div class="form-group">
+          <label for="productName">Product Name</label>
+          <input type="text" id="productName" name="productName" placeholder="e.g., Organic Tomatoes" required>
+        </div>
+        <div class="form-group">
+          <label for="productCategory">Category</label>
+          <select id="productCategory" name="productCategory" required>
+            <option value="">Select category</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="fruits">Fruits</option>
+            <option value="grains">Grains</option>
+            <option value="dairy">Dairy</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Price (per kg/unit)</label>
+          <input type="number" id="productPrice" name="productPrice" step="0.01" placeholder="e.g., 2.99" required>
+        </div>
+        <div class="form-group">
+          <label for="productQuantity">Available Quantity</label>
+          <input type="number" id="productQuantity" name="productQuantity" placeholder="e.g., 50" required>
+        </div>
+        <div class="form-group">
+          <label for="productDescription">Description</label>
+          <textarea id="productDescription" name="productDescription" rows="3" placeholder="Product details"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="productImage">Product Image</label>
+          <input type="file" id="productImage" name="productImage" accept="image/*">
+        </div>
+        <button type="submit" class="submit-btn">Add Product</button>
+      </form>
+    </div>
+  </div>
+
+  <a href="index.html" class="home-btn">🏠</a>
+
+  <script>
+    // Scroll animation
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    animateElements.forEach(element => {
+      observer.observe(element);
+    });
+
+    // Modal functionality
+    const modal = document.getElementById('productModal');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const closeModal = document.getElementById('closeModal');
+
+    addProductBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      document.getElementById('productForm').reset();
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.getElementById('productForm').reset();
+      }
+    });
+
+    // --- NEW: Handle Product Form Submission ---
+    document.getElementById('productForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Authentication failed. Please log in again.');
+        return;
+      }
+      
+      const formData = new FormData(this);
+      const productData = Object.fromEntries(formData.entries());
+
+      // Convert price and quantity to numbers
+      productData.price = parseFloat(productData.productPrice);
+      productData.quantity = parseInt(productData.productQuantity, 10);
+      productData.name = productData.productName;
+      productData.category = productData.productCategory;
+      productData.description = productData.productDescription;
+      // We are not handling file uploads on the server, so we'll just set a placeholder image
+      productData.image = 'https://images.unsplash.com/photo-1599352102179-813c9320268a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80';
+      
+      try {
+        const response = await fetch('http://localhost:3000/api/farmer/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(productData)
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Product added successfully!');
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+          this.reset();
+        } else {
+          alert(`Failed to add product: ${data.error}`);
+        }
+      } catch (error) {
+        console.error('Error adding product:', error);
+        alert('Failed to connect to the server. Please try again.');
+      }
+    });
+
+    // Check authentication and load user data
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is logged in and is a farmer
+      const token = localStorage.getItem('token');
+      const userRole = localStorage.getItem('userRole');
+      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+
+      if (!token || userRole !== 'farmer') {
+        // If not logged in or not a farmer, redirect to login
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Update user information in the header
+      if (userData) {
+        document.getElementById('userName').textContent = userData.firstName + ' ' + userData.lastName;
+        document.getElementById('userAvatar').textContent = 
+          userData.firstName.charAt(0) + userData.lastName.charAt(0);
+      }
+
+      // Add logout functionality
+      document.querySelector('a[href="login.html"]').addEventListener('click', (e) => {
+        e.preventDefault();
+        // Clear all authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userData');
+        // Redirect to login
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>

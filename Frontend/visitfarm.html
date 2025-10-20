@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farm Visit Booking | FarmConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f1f8e9;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    body::before {
+      content: '';
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(241, 248, 233, 0.85); z-index: -1;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white); padding: 30px 20px; text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 { margin: 0; font-size: 2.2rem; font-weight: 600; }
+    header p { margin-top: 10px; opacity: 0.9; }
+    .container {
+      max-width: 800px; margin: 40px auto; background: var(--white);
+      padding: 30px; border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .farm-visit-image img { width: 150px; height: 150px; object-fit: contain; }
+    label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-dark); }
+    input, select, textarea {
+      width: 100%; padding: 12px 15px; margin-bottom: 20px; border-radius: 8px;
+      border: 1px solid #ddd; font-size: 16px;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3); outline: none;
+    }
+    button {
+      background-color: var(--primary); color: var(--white); border: none; padding: 14px 30px;
+      font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: var(--primary-dark); }
+    .home-btn {
+      position: fixed; bottom: 30px; right: 30px; background-color: var(--secondary);
+      color: var(--white); width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 100; text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Book a Farm Visit</h1>
+    <p>Explore fresh produce directly from Nashik's farms</p>
+  </header>
+
+  <div class="container">
+    <div class="farm-visit-image" style="text-align: center; margin-bottom: 25px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" alt="Farm Visit">
+    </div>
+
+    <h2 class="animate__animated animate__fadeIn">Farm Visit Request Form</h2>
+    <form id="visitForm">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" placeholder="Your name" required readonly>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Your email" required readonly>
+
+      <label for="farmerSelect">Choose a Farmer</label>
+      <select id="farmerSelect" name="farmerSelect" required>
+        <option value="" disabled selected>Loading active farmers...</option>
+      </select>
+      <label for="date">Preferred Visit Date</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="purpose">Purpose of Visit</label>
+      <textarea id="purpose" name="purpose" rows="3" placeholder="E.g., learning, purchasing, photography..." required></textarea>
+
+      <button type="button" onclick="submitVisit()">Submit Request</button>
+    </form>
+  </div>
+
+  <a href="index.html" class="home-btn">🏠</a>
+
+  <script>
+    // --- **FIX**: Immediately-invoked Authentication and Authorization Check ---
+    // This script runs right away to protect the page.
+    (function() {
+        const token = localStorage.getItem('token');
+        const userRole = localStorage.getItem('userRole');
+
+        if (!token) {
+            // **Case 1**: User is not logged in at all.
+            // Redirects to the login page.
+            alert('You must be logged in to book a farm visit. Redirecting to login page.');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        if (userRole !== 'customer') {
+            // **Case 2**: User is logged in, but is NOT a customer.
+            // Redirects farmers and admins to their respective dashboards.
+            alert('This feature is for customers only. Redirecting you to your dashboard.');
+            if (userRole === 'farmer') {
+                window.location.href = 'farmer_dashboard.html';
+            } else if (userRole === 'admin') {
+                window.location.href = 'dashboard.html';
+            } else {
+                // Fallback for any other unexpected role
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+        // **Case 3**: User is a logged-in customer. The script continues, and the page loads normally.
+    })();
+
+    // This runs after the auth check passes, populating the page for the customer
+    document.addEventListener('DOMContentLoaded', () => {
+      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+      
+      // Pre-fill form with customer data
+      document.getElementById('fullname').value = `${userData.firstName} ${userData.lastName}`;
+      document.getElementById('email').value = userData.email;
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("date").setAttribute('min', today);
+
+      // Call the function to load farmers
+      loadActiveFarmers();
+    });
+
+    // Function to load farmers into the dropdown
+    async function loadActiveFarmers() {
+        const token = localStorage.getItem('token');
+        const farmerSelect = document.getElementById('farmerSelect');
+        try {
+            const response = await fetch('http://localhost:3000/api/farmers', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!response.ok) throw new Error('Failed to load farmers');
+            const farmers = await response.json();
+            farmerSelect.innerHTML = '<option value="" disabled selected>Select a farmer to visit</option>';
+            if (farmers.length > 0) {
+                farmers.forEach(farmer => {
+                    const option = document.createElement('option');
+                    option.value = farmer._id;
+                    option.textContent = `${farmer.firstName} ${farmer.lastName} (${farmer.farmName || 'N/A'})`;
+                    farmerSelect.appendChild(option);
+                });
+            } else {
+                farmerSelect.innerHTML = '<option value="" disabled>No active farmers found</option>';
+            }
+        } catch (error) {
+            console.error('Error loading farmers:', error);
+            farmerSelect.innerHTML = '<option value="" disabled>Could not load farmers</option>';
+        }
+    }
+
+    // Form submission logic
+    async function submitVisit() {
+      const farmerId = document.getElementById("farmerSelect").value;
+      const date = document.getElementById("date").value;
+      const purpose = document.getElementById("purpose").value.trim();
+
+      if (!farmerId || !date || !purpose) {
+        alert('Please select a farmer and fill all other fields.');
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+      try {
+          const response = await fetch('http://localhost:3000/api/visits/request', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                  farmerId: farmerId,
+                  visitDate: date,
+                  purpose: purpose,
+              })
+          });
+          const result = await response.json();
+          if (response.ok) {
+              alert(`✅ Visit request submitted successfully!\nThe farmer has been notified. You can check the status on your dashboard.`);
+              document.getElementById("visitForm").reset();
+              document.getElementById('farmerSelect').selectedIndex = 0;
+          } else {
+              alert(`Error submitting request: ${result.error}`);
+          }
+      } catch (error) {
+          console.error('Error submitting visit request:', error);
+          alert('Failed to connect to the server. Please try again.');
+      }
+    }
+  </script>
+
+</body>
+</html>

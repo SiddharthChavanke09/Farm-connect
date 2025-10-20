@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | FarmConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #66bb6a;
+            --primary-dark: #1b5e20;
+            --secondary: #ff9800;
+            --white: #ffffff;
+            --light-bg: #f7fff7;
+            --text-dark: #263238;
+            --text-light: #607d8b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .cart-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .cart-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-dark);
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-name {
+            flex: 1;
+        }
+
+        .item-quantity {
+            width: 100px;
+            text-align: center;
+        }
+
+        .item-price {
+            width: 100px;
+            text-align: right;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: var(--primary-light);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .cart-summary {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .total {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .checkout-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: var(--text-light);
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Shopping Cart</h1>
+        </div>
+
+        <div id="cartItems" class="cart-items">
+            <!-- Cart items will be added here -->
+        </div>
+
+        <div class="cart-summary">
+            <div class="total">Total: $<span id="cartTotal">0.00</span></div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            
+            if (!token || !userData) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return userData;
+        }
+
+        // Load and display cart items
+        function loadCart() {
+            const userData = checkAuth();
+            if (!userData) return;
+
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cartItemsDiv = document.getElementById('cartItems');
+            const cartTotalSpan = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                return;
+            }
+
+            let total = 0;
+            cartItemsDiv.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="cart-item">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-quantity">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                    </div>
+                `;
+            }).join('');
+
+            cartTotalSpan.textContent = total.toFixed(2);
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, change) {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const item = cart.find(i => i.id === itemId);
+            
+            if (item) {
+                item.quantity = Math.max(0, item.quantity + change);
+                if (item.quantity === 0) {
+                    const index = cart.indexOf(item);
+                    cart.splice(index, 1);
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        // Checkout function
+        async function checkout() {
+            const userData = checkAuth();
+            if (!userData) return;
+
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            try {
+                // Group items by farmer
+                const ordersByFarmer = cart.reduce((acc, item) => {
+                    if (!acc[item.farmerId]) {
+                        acc[item.farmerId] = {
+                            items: [],
+                            totalAmount: 0
+                        };
+                    }
+                    acc[item.farmerId].items.push({
+                        productName: item.name,
+                        quantity: item.quantity,
+                        price: item.price
+                    });
+                    acc[item.farmerId].totalAmount += item.price * item.quantity;
+                    return acc;
+                }, {});
+
+                // Create orders for each farmer
+                for (const [farmerId, orderData] of Object.entries(ordersByFarmer)) {
+                    const response = await fetch('http://localhost:5000/api/orders', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            customerId: userData.id,
+                            farmerId: farmerId,
+                            items: orderData.items,
+                            totalAmount: orderData.totalAmount,
+                            deliveryAddress: userData.address || 'Default Address'
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to create order');
+                    }
+                }
+
+                // Clear cart and show success message
+                localStorage.setItem('cart', '[]');
+                alert('Orders placed successfully! Redirecting to dashboard...');
+                window.location.href = 'customer_dashboard.html';
+
+            } catch (error) {
+                console.error('Error during checkout:', error);
+                alert('Failed to process checkout. Please try again.');
+            }
+        }
+
+        // Load cart when page loads
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>

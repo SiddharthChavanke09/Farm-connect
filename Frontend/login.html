@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | FarmConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    /* Your existing CSS styles remain the same */
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #66bb6a;
+      --primary-dark: #1b5e20;
+      --secondary: #ff9800;
+      --white: #ffffff;
+      --light-bg: #f7fff7;
+      --text-dark: #263238;
+      --text-light: #607d8b;
+      --admin-color: #9c27b0;
+      --admin-dark: #7b1fa2;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(247, 255, 247, 0.85);
+      z-index: -1;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 450px;
+      background: var(--white);
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      margin: 20px;
+      position: relative;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-light), var(--secondary));
+    }
+
+    .login-header {
+      text-align: center;
+      padding: 30px 0 20px;
+      background-color: var(--primary);
+      color: var(--white);
+      position: relative;
+    }
+
+    .login-header::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 30px;
+      background-color: var(--primary);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+    }
+
+    .login-header i {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: var(--secondary);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .login-header p {
+      margin: 10px 0 0;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .login-body {
+      padding: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: rgba(232, 245, 233, 0.2);
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.3);
+      outline: none;
+      background-color: var(--white);
+    }
+
+    .btn-login {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-login:hover::before {
+      left: 100%;
+    }
+
+    .btn-admin {
+      background: linear-gradient(135deg, var(--admin-color) 0%, var(--admin-dark) 100%);
+      margin-top: 15px;
+    }
+
+    .register-options {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--secondary) 0%, #e65100 100%);
+      color: var(--white);
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dropdown-btn i {
+      margin-right: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+    }
+
+    .dropdown-btn:hover i {
+      transform: translateX(5px);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      width: 100%;
+      background-color: var(--white);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      z-index: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      animation: fadeInDown 0.3s ease-out;
+    }
+
+    .dropdown-content a {
+      color: var(--text-dark);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--light-bg);
+      color: var(--primary-dark);
+    }
+
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+
+    .dropdown.active .dropdown-btn {
+      background: linear-gradient(135deg, #e65100 0%, #bf360c 100%);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .login-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .login-footer a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: #f44336;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .admin-login-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .admin-login-section h3 {
+      text-align: center;
+      color: var(--admin-color);
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 480px) {
+      .login-body {
+        padding: 20px;
+      }
+      
+      .login-header h2 {
+        font-size: 24px;
+      }
+      
+      .login-header i {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <i class="fas fa-leaf"></i>
+      <h2>Welcome Back!</h2>
+      <p>Login to your FarmConnect account</p>
+    </div>
+    
+    <div class="login-body">
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          <div class="error-message" id="emailError">Please enter a valid email</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+        </div>
+        
+        <button type="button" class="btn-login" onclick="loginUser()">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+
+        <!-- <div class="admin-login-section">
+          <h3>Admin Login</h3>
+          <p>Use "admin@farmconnect.com" and "admin123"</p>
+          <button type="button" class="btn-login btn-admin" onclick="loginUser()">
+            <i class="fas fa-lock"></i> Admin Login
+          </button>
+        </div> -->
+      </form>
+      
+      <div class="register-options">
+        <p>Don't have an account? Join as:</p>
+        
+        <div class="dropdown" id="registerDropdown">
+          <button class="dropdown-btn" id="dropdownBtn">
+            <i class="fas fa-user-plus"></i> Join As
+          </button>
+          <div class="dropdown-content">
+            <a href="farmer_register.html"><i class="fas fa-tractor"></i> Farmer</a>
+            <a href="customer_register.html"><i class="fas fa-shopping-basket"></i> Customer</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="login-footer">
+        <a href="forgot_password.html">Forgot password?</a> | 
+        <a href="index.html">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle dropdown
+    document.getElementById('dropdownBtn').addEventListener('click', function() {
+      document.getElementById('registerDropdown').classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('registerDropdown');
+      if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Check for stored credentials on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const tempEmail = sessionStorage.getItem('tempLoginEmail');
+      const tempPassword = sessionStorage.getItem('tempLoginPassword');
+      
+      if (tempEmail && tempPassword) {
+        document.getElementById('email').value = tempEmail;
+        document.getElementById('password').value = tempPassword;
+        // Clear stored credentials
+        sessionStorage.removeItem('tempLoginEmail');
+        sessionStorage.removeItem('tempLoginPassword');
+        // Auto submit after a short delay
+        setTimeout(() => {
+          loginUser();
+        }, 500);
+      }
+    });
+
+    // Login function with redirection based on user type
+    async function loginUser() {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+
+      // Clear previous errors
+      clearErrors();
+
+      // --- START: Hardcoded Admin Login for Development ---
+      // This section is for development purposes only.
+      // Do not use this in a production environment.
+      if (email === 'admin@farmconnect.com' && password === 'admin123') {
+        // Set token expiry to 24 hours from now
+        const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+        
+        const adminUser = {
+            id: 'admin',
+            email: 'admin@farmconnect.com',
+            role: 'admin',
+            firstName: 'Admin',
+            lastName: 'User',
+            name: 'Admin User'
+        };
+
+        // Store admin data with expiry
+        localStorage.setItem('userData', JSON.stringify(adminUser));
+        localStorage.setItem('userRole', 'admin');
+        localStorage.setItem('token', 'admin-token');
+        localStorage.setItem('tokenExpiry', tokenExpiry);
+
+        // Show success message
+        const successDiv = document.createElement('div');
+        successDiv.style.backgroundColor = '#4caf50';
+        successDiv.style.color = 'white';
+        successDiv.style.padding = '10px';
+        successDiv.style.borderRadius = '4px';
+        successDiv.style.marginBottom = '10px';
+        successDiv.style.textAlign = 'center';
+        successDiv.textContent = 'Admin login successful! Redirecting...';
+
+        const form = document.getElementById('loginForm');
+        form.insertAdjacentElement('beforebegin', successDiv);
+
+        // Use replace to prevent back button
+        setTimeout(() => {
+            window.location.replace('dashboard.html');
+        }, 1500);
+
+        return;
+      }
+      // --- END: Hardcoded Admin Login for Development ---
+
+      // Basic validation for other users
+      if (!email || !password) {
+        if (!email) showError(document.getElementById('email'), 'Email is required');
+        if (!password) showError(document.getElementById('password'), 'Password is required');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userData', JSON.stringify(data.user));
+        localStorage.setItem('userRole', data.user.role);
+
+        // Show success message
+        const successDiv = document.createElement('div');
+        successDiv.style.backgroundColor = '#4caf50';
+        successDiv.style.color = 'white';
+        successDiv.style.padding = '10px';
+        successDiv.style.borderRadius = '4px';
+        successDiv.style.marginBottom = '10px';
+        successDiv.style.textAlign = 'center';
+        successDiv.textContent = 'Login successful! Redirecting...';
+        
+        const form = document.getElementById('loginForm');
+        form.insertAdjacentElement('beforebegin', successDiv);
+
+        // Redirect based on role
+        setTimeout(() => {
+          if (data.user.role === 'customer') {
+            window.location.href = 'customer_dashboard.html';
+          } else if (data.user.role === 'farmer') {
+            window.location.href = 'farmer_dashboard.html';
+          } else if (data.user.role === 'admin') {
+            window.location.href = 'dashboard.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }, 1500);
+      } catch (error) {
+        console.error('Login error:', error);
+        const errorMessage = document.createElement('div');
+        errorMessage.style.backgroundColor = '#f44336';
+        errorMessage.style.color = 'white';
+        errorMessage.style.padding = '10px';
+        errorMessage.style.borderRadius = '4px';
+        errorMessage.style.marginBottom = '10px';
+        errorMessage.style.textAlign = 'center';
+        errorMessage.textContent = error.message || 'Connection failed. Please check your internet connection and try again.';
+        
+        const form = document.getElementById('loginForm');
+        form.insertAdjacentElement('beforebegin', errorMessage);
+        
+        // Remove error message after 5 seconds
+        setTimeout(() => {
+          errorMessage.remove();
+        }, 5000);
+      }
+    }
+
+    // Helper function to show error messages
+    function showError(input, message) {
+      const formGroup = input.parentElement;
+      const errorDiv = formGroup.querySelector('.error-message') || document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.style.color = '#f44336';
+      errorDiv.style.fontSize = '14px';
+      errorDiv.style.marginTop = '5px';
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = message;
+      
+      if (!formGroup.querySelector('.error-message')) {
+        formGroup.appendChild(errorDiv);
+      }
+      
+      input.style.borderColor = '#f44336';
+      input.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
+    }
+
+    // Helper function to clear errors
+    function clearErrors() {
+      const errorMessages = document.querySelectorAll('.error-message');
+      const inputs = document.querySelectorAll('.form-group input');
+      
+      errorMessages.forEach(msg => {
+        msg.style.display = 'none';
+      });
+      
+      inputs.forEach(input => {
+        input.style.borderColor = '#ddd';
+        input.style.backgroundColor = 'rgba(232, 245, 233, 0.2)';
+      });
+
+      // Remove any global messages
+      const globalMessages = document.querySelectorAll('.login-body > div');
+      globalMessages.forEach(msg => {
+        if (msg.tagName !== 'FORM' && msg.id !== 'registerDropdown') {
+          msg.remove();
+        }
+      });
+    }
+
+    // Allow form submission on Enter key
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        loginUser();
+      }
+    });
+  </script>
+</body>
+</html>
