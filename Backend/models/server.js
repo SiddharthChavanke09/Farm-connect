@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/farmconnect';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://siddharthchavanke920_db_user:<db_password>@cluster1.biquuic.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1';
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
